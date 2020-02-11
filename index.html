@@ -8,6 +8,11 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
 
+    <style>
+      .error{
+        color : red;
+      }
+    </style>
     <title>育將點餐系統</title>
 </head>
 <body>
@@ -19,7 +24,7 @@
               <div class="col-sm-3">
                 <div class="form-group">
                   <label>桌號<span class="text-danger">*必選欄位</span></label>
-                  <select name="entry.1752470597" id="1752470597" class="form-control" size="1" required>              
+                  <select name="entry.1752470597" id="1752470597" class="form-control" size="1">              
                     <option value="" selected hidden>請選擇桌號</option>
                     <option value="1號桌">1號桌</option>
                     <option value="2號桌">2號桌</option>
@@ -84,10 +89,75 @@
     </iframe>
 
 
+
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/popper.min.js"></script>
     <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+
+    <!-- 表單驗證 -->
+    <script>
+        $(document).ready(function(){
+            $("#myForm").validate({              
+              submitHandler: function(form) {
+              form.submit();
+              },
+
+              rules : {
+                'entry.1752470597' : {
+                  required : true
+                },
+                'entry.995990190' : {
+                  digits : true,
+                  min : 0
+                },
+                'entry.145988367' : {
+                  digits : true,
+                  min : 0
+                },
+                'entry.1828496956' : {
+                  digits : true,
+                  min : 0
+                },
+                'entry.1925021179' : {
+                  digits : true,
+                  min : 0
+                }
+              },
+
+              messages : {
+                'entry.1752470597' : {
+                  required : "請輸入桌號"
+                },
+                'entry.995990190' : {
+                  digits : "請輸入整數",
+                  min : "不可輸入負數"
+                },
+                'entry.145988367' : {
+                  digits : "請輸入整數",
+                  min : "不可輸入負數"
+                },
+                'entry.1828496956' : {
+                  digits : "請輸入整數",
+                  min : "不可輸入負數"
+                },
+                'entry.1925021179' : {
+                  digits : "請輸入整數",
+                  min : "不可輸入負數"
+                }
+              }
+            });
+            
+        });
+    </script>
+
+    <script>
+      var total = 0;
+      var x1 = document.getElementById("995990190");
+      console.log(x1);
+    </script>
 </body>
 </html>

@@ -15,7 +15,7 @@
     </style>
     <title>點餐系統 試做型</title>
 </head>
-<body>
+<body onchange="calTotal()">
     <h1 class="text-center mt-5">點餐系統</h1>
     <div class="container">
         <form role="form" action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSc_rdRzlqiJ0QjuJRObkhY-lBlkWFwMMN94Sv8pVNQfTMQcAQ/formResponse" method="post" id="myForm" target='returnWin'>
@@ -35,39 +35,56 @@
                   </select>
                 </div>
               </div>
+              <!-- 合計 -->
+              <div class="col-sm-3">
+                  <div class="form-group">
+                    <label>合計<span class="text-danger"></span></label>
+                    <input type="text" class="form-control" value="0" name="total-price" id="total" readonly>
+                  </div>
+              </div>
             </div>
             <div class="row">
               <!--雞腿飯-90元-->              
               <div class="col-sm-3">
                 <div class="form-group">
-                  <label>雞腿飯-90元<span class="text-danger">(請填數量)</span></label>
-                  <input type="number" class="form-control" name="entry.995990190" id="995990190" value="0" min="0">
+                  <label>
+                    <span class="title">雞腿飯-90元</span>
+                    <span class="text-danger">(請填數量)</span>
+                  </label>
+                  <input type="number" class="form-control counter" name="entry.995990190" id="995990190" value="0" min="0">
                 </div>
               </div>          
               <!--雞排飯-80元-->              
               <div class="col-sm-3">
                 <div class="form-group">
-                  <label>雞排飯-80元<span class="text-danger">(請填數量)</span></label>
-                  <input type="number" class="form-control" name="entry.145988367" id="145988367" value="0" min="0">
+                  <label>
+                    <span class="title">雞排飯-80元</span>
+                    <span class="text-danger">(請填數量)</span>
+                  </label>
+                  <input type="number" class="form-control counter" name="entry.145988367" id="145988367" value="0" min="0" >
                 </div>
               </div>          
               <!--排骨飯-70元-->              
               <div class="col-sm-3">
                 <div class="form-group">
-                  <label>排骨飯-70元<span class="text-danger">(請填數量)</span></label>
-                  <input type="number" class="form-control" name="entry.1828496956" id="1828496956" value="0" min="0">
+                  <label>
+                      <span class="title">排骨飯-70元</span>
+                      <span class="text-danger">(請填數量)</span>
+                  </label>
+                  <input type="number" class="form-control counter" name="entry.1828496956" id="1828496956" value="0" min="0">
                 </div>
               </div>          
               <!--招牌飯-60元-->              
               <div class="col-sm-3">
                 <div class="form-group">
-                  <label>招牌飯-60元<span class="text-danger">(請填數量)</span></label>
-                  <input type="number" class="form-control" name="entry.1925021179" id="1925021179" value="0" min="0">
+                  <label>
+                    <span class="title">招牌飯-60元</span>
+                    <span class="text-danger">(請填數量)</span>
+                  </label>
+                  <input type="number" class="form-control counter" name="entry.1925021179" id="1925021179" value="0" min="0">
                 </div>
               </div> 
-    
             </div> 
-            
             <div class="row">
               <div class="col-sm-12">  
                 <!-- 備註 -->
@@ -77,19 +94,17 @@
                 </div>
               </div>
             </div>
-    
             <div class="text-center pb-3">
               <button type="submit" class="btn btn-primary">送出</button>
             </div>
+            <div class="text-center pb-3">
+              <button type="submit" class="btn btn-success">聯絡我們</button>
+            </div>
           </form>
-      
     </div>
     <!-- 表單返回頁，記得在表單加「 target='returnWin' 」 -->
     <iframe name="returnWin" style="display: none;" onload="this.onload=function(){window.location='ok.html'}">
     </iframe>
-
-
-
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -125,6 +140,9 @@
                 'entry.1925021179' : {
                   digits : true,
                   min : 0
+                },
+                'total-price' : {
+                  min : 1
                 }
               },
 
@@ -147,17 +165,42 @@
                 'entry.1925021179' : {
                   digits : "請輸入整數",
                   min : "不可輸入負數"
+                },
+                'total-price' : {
+                  min : "請點餐,便當數量不可為0"
                 }
               }
             });
             
         });
+
+    
     </script>
 
+    <!-- 計算合計金額 -->
     <script>
+    function calTotal(){
       var total = 0;
-      var x1 = document.getElementById("995990190");
-      console.log(x1);
+      //取得class為counter的值(即為數量)
+      var counters = document.getElementsByClassName("counter"); 
+      //取得class為title的值(即為便當項目)
+      var titles = document.getElementsByClassName("title");
+
+      //偵測項目長度,設置成for迴圈來重複計算,並總合多少錢
+      for (i = 0;i < counters.length;i++){
+        //取得便當數量
+        var amount = counters[i].value; 
+        //取得便當項目
+        var title = titles[i].innerText;
+        //將便當項目分離並存入陣列
+        var subArr = title.split("-");
+        //透過轉型將便當項目中的數字從字串轉為數字(此時並去掉非數字的部分,ex:90元在此時剩下90)
+        var price = parseInt(subArr[1]);
+        //計算便當總價並放入total
+        total += amount * price;
+      }
+      document.getElementById("total").value = total;
+    }
     </script>
 </body>
 </html>
